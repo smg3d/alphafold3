@@ -628,10 +628,16 @@ def main(_):
   if _RUN_INFERENCE.value:
     # Fail early on incompatible devices, but only if we're running inference.
     gpu_devices = jax.local_devices(backend='gpu')
-    if gpu_devices and float(gpu_devices[0].compute_capability) < 8.0:
+    compute_capability = float(gpu_devices[0].compute_capability)
+    if gpu_devices and (
+      compute_capability < 6.0
+      or (compute_capability >= 7.0 and compute_capability < 8.0)
+    ):
       raise ValueError(
           'There are currently known unresolved numerical issues with using'
-          ' devices with compute capability less than 8.0. See '
+          ' devices with compute capability 7.x. The code has not been tested'
+          ' with compute capability < 6.0. The code has been confirmed to work'
+          ' with compute capability 6.x and 8.x. See '
           ' https://github.com/google-deepmind/alphafold3/issues/59 for'
           ' tracking.'
       )
