@@ -1505,7 +1505,7 @@ def get_reference(
     # V3 is the latest and supports macrocycles .
     params = AllChem.ETKDGv3()
     params.randomSeed = int(random_state.randint(1, 1 << 31))
-    params.maxIterations = 100000
+    params.maxIterations = 1000000
     params.numThreads = 8
     AllChem.EmbedMolecule(m, params)
     conformer = m.GetConformer()
